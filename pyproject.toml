@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "rekognition_batch_detect"
+version = "0.1.0"
+description = ""
+authors = ["Alessandro Cere <alecere@amazon.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4"
+boto3 = "^1.17.93"
+requests = "^2.25.1"
+"aws-cdk.aws-s3" = "^1.108.1"
+tenacity = "^7.0.0"
+"aws-cdk.aws-sqs" = "^1.108.1"
+"aws-cdk.aws-lambda" = "^1.108.1"
+"aws-cdk.aws-lambda-event-sources" = "^1.108.1"
+aws-lambda-powertools = "^1.17.0"
+"aws-cdk.aws-lambda-python" = "^1.108.1"
+
+[tool.poetry.dev-dependencies]
+black = "^21.6b0"
+ipykernel = "^5.5.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
