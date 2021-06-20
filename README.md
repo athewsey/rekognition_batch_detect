@@ -22,9 +22,6 @@ The process flow:
 2. Aggregated statistics based on the reports can be visualized in Amazon Quicksight
 2. Event matches with similarity score above a set threshold are published into an SNS topic, to be distributed as notifications.
 
-## 
-
-
 
 ## Deployment
 Deployment requires
@@ -65,3 +62,33 @@ step to activate your virtualenv.
     $ cdk deply --all
     ```
 
+## Testing
+To test the solution, there's a a [Jupyter notebook in the demo folder](demo/FaceMatchingRekognition.ipynb). The notebook has been tested in Amazon SageMaker, but doesn't depend on any specific platform, as long as the IAM role associated with the boto3 session has the necessary permissions.
+
+In particular:
+
+For the Input and Output buckets:
+>```
+>s3:GetObject*
+>s3:GetBucket*
+>s3:List*
+>s3:DeleteObject*
+>s3:PutObject*
+>s3:Abort*
+>```
+
+
+For the Rekognition collection:
+>```
+>rekognition:ListCollections
+>rekognition:ListFaces
+>rekognition:ListTagsForResource
+>```
+
+For the System Manager Parameters:
+>```
+>ssm:DescribeParameters
+>ssm:GetParameters
+>ssm:GetParameter
+>ssm:GetParameterHistory
+>```
