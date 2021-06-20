@@ -3,15 +3,18 @@ import os
 
 from aws_cdk import core as cdk
 
-from rekognition_batch_detect.rekognition_batch_detect_stack import (
+from rekognition_batch_detect.base_stack import (
     RekognitionBatchDetectStack,
 )
+from rekognition_batch_detect.monitoring_stack import MonitoringStack
 
 
 app = cdk.App()
-RekognitionBatchDetectStack(
+base_stack = RekognitionBatchDetectStack(
     app,
-    "RekognitionBatchDetectStack",
+    "RekognitionBatchDetect",
+    notification_on=True
 )
 
+MonitoringStack(app, "MonitoringStack", base_stack.bucket_out)
 app.synth()

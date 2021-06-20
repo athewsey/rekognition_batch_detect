@@ -1,0 +1,38 @@
+{
+  "Records": [
+      {
+          "eventVersion": "2.1",
+          "eventSource": "aws:s3",
+          "awsRegion": "ap-southeast-1",
+          "eventTime": "2021-06-20T07:46:46.830Z",
+          "eventName": "ObjectCreated:Put",
+          "userIdentity": {
+              "principalId": "AWS:XXXXXXXXXX:RekognitionBatchDetect-MatchFacesFnFD5CBB38-PVavE8pcCgaX"
+          },
+          "requestParameters": {
+              "sourceIPAddress": "XXXXXXX"
+          },
+          "responseElements": {
+              "x-amz-request-id": "S4F2Y4S3KTAP05PC",
+              "x-amz-id-2": "IarrdGVtDR7aFTs57OJSBaudqIUI8giJNQTHGwOWV7cfIBaZghXjlwJtx5DWNW+BIeM70j1mwl+20vAnbEvljNDl8GnH5E4z"
+          },
+          "s3": {
+              "s3SchemaVersion": "1.0",
+              "configurationId": "NTlhNDNiY2UtMmZlNC00MzNlLWIwYjQtNDM4OTJjZjcyZWQ4",
+              "bucket": {
+                  "name": "rekognitionbatchdetect-bucketout865108be-11hikfc0gjxe3",
+                  "ownerIdentity": {
+                      "principalId": "ARJ0EWNBJ859Q"
+                  },
+                  "arn": "arn:aws:s3:::rekognitionbatchdetect-bucketout865108be-11hikfc0gjxe3"
+              },
+              "object": {
+                  "key": "output/Hans_Blix_0006.jpg.json",
+                  "size": 115,
+                  "eTag": "17de71e209774efaba86a2da8781fafc",
+                  "sequencer": "0060CEF26E5C79C15B"
+              }
+          }
+      }
+  ]
+}

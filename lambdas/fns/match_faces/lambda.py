@@ -6,11 +6,14 @@ from aws_lambda_powertools import Logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = Logger()
-client = boto3.client("rekognition")
+reko = boto3.client("rekognition")
+s3 = boto3.resource("s3")
 collection_id = os.getenv("COLLECTION_NAME")
 max_faces_index = os.getenv("MAX_FACE_INDEX", 1)
 max_faces_match = os.getenv("MAX_FACE_MATCH", 100)
 threshold = os.getenv("FACE_MATCHING_THRESHOLD", 50)
+bucket_out = os.getenv("BUCKET_OUT")
+prefix_out = os.getenv("PREFIX_OUT", "output")
 
 # @logger.inject_lambda_context(log_event=True)
 def handler(event, context):
@@ -39,12 +42,28 @@ def handler(event, context):
 
                 # check if there's any match with other customers_id
                 res = [
-                    k
+                    {**k, "CustomerId": k["Face"]["ExternalImageId"].rsplit("_", 1)[0]}
                     for k in matches
                     if k["Face"]["ExternalImageId"].rsplit("_", 1)[0] != customer_id
                 ]
 
                 logger.info(f"Matches that require manual investigation {res}")
+
+                # if len(res) > 0:
+                s3object = s3.Object(bucket_out, f"{prefix_out}/{image_id}.json")
+                s3object.put(
+                    Body=(
+                        bytes(
+                            json.dumps(
+                                {
+                                    "Source": f"{bucket}/{object_key}",
+                                    "CustomerID": customer_id,
+                                    "Matches": res,
+                                }
+                            ).encode("UTF-8")
+                        )
+                    )
+                )
 
         return {"status": "success", "message": res}
     except Exception:
@@ -53,11 +72,11 @@ def handler(event, context):
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=0.2, min=1, max=10))
 def search_faces_retry(**kwargs):
-    return client.search_faces(**kwargs)
+    return reko.search_faces(**kwargs)
 
 
 def add_search_twin(bucket, s3_path, image_id, collection_id):
-    response_add = client.index_faces(
+    response_add = reko.index_faces(
         CollectionId=collection_id,
         Image={"S3Object": {"Bucket": bucket, "Name": s3_path}},
         ExternalImageId=image_id,
@@ -80,4 +99,3 @@ def add_search_twin(bucket, s3_path, image_id, collection_id):
 
     faceMatches = response_search["FaceMatches"]
     return faceMatches
-    # return {k["Face"]["ExternalImageId"]: k["Similarity"] for k in faceMatches}

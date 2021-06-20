@@ -1,0 +1,3 @@
+awswrangler
+s3fs
+boto3
