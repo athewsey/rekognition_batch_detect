@@ -92,3 +92,6 @@ For the System Manager Parameters:
 >ssm:GetParameter
 >ssm:GetParameterHistory
 >```
+***
+## License
+[MIT-0](LICENSE)
