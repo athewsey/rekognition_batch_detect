@@ -86,7 +86,10 @@ class MonitoringStack(cdk.Stack):
                             "glue:CreateTable",
                             "athena:StartQueryExecution",
                         ],
-                        resources=["*"],
+                        resources=[
+                            face_match_db.catalog_arn,
+                            f"arn:aws:athena:ap-southeast-1:{self.account}:workgroup/primary",
+                        ],
                     ),
                     iam.PolicyStatement(
                         actions=["s3:*"],
