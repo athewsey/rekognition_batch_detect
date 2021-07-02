@@ -88,7 +88,10 @@ class MonitoringStack(cdk.Stack):
                         ],
                         resources=[
                             face_match_db.catalog_arn,
-                            f"arn:aws:athena:ap-southeast-1:{self.account}:workgroup/primary",
+                            face_match_db.database_arn,
+                            face_match_table.table_arn,
+                            f"arn:aws:glue:{self.region}:{self.account}:table/{face_match_db.database_name}/matchingstats",
+                            f"arn:aws:athena:{self.region}:{self.account}:workgroup/primary",
                         ],
                     ),
                     iam.PolicyStatement(
